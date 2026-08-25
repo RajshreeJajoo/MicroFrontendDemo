@@ -1,0 +1,12 @@
+{
+  "name": "micro-frontend-demo",
+  "private": true,
+  "description": "Micro-frontend architecture demo with Vite Module Federation, React 19, and independent deployable apps",
+  "scripts": {
+    "install:all": "npm install --prefix product-app && npm install --prefix cart-app && npm install --prefix shell",
+    "dev:product": "npm run dev --prefix product-app",
+    "dev:cart": "npm run dev --prefix cart-app",
+    "dev:shell": "npm run dev --prefix shell",
+    "build:all": "npm run build --prefix product-app && npm run build --prefix cart-app && npm run build --prefix shell"
+  }
+}
