@@ -16,10 +16,11 @@ export default class RemoteErrorBoundary extends Component {
         <div style={styles.error}>
           <strong>{this.props.label ?? "Remote"} failed to load</strong>
           <p style={styles.text}>
-            Start all three apps:{" "}
+            Run{" "}
             <code style={styles.code}>npm run dev:all</code> from the project
-            root, or run product-app (:3001) and cart-app (:3002) before the
-            shell (:3000).
+            root and wait for remotes to finish building (ports :3001 and
+            :3002), then open the shell at{" "}
+            <code style={styles.code}>localhost:3000</code>.
           </p>
         </div>
       );

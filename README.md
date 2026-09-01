@@ -67,18 +67,20 @@ npm run install:all
 npm run dev:all
 ```
 
-Open [http://localhost:3000](http://localhost:3000) → click **Add to Cart** on products → Cart remote updates live.
+Open [http://localhost:3000](http://localhost:3000) only — click **Add to Cart** on products → Cart remote updates live.
+
+> **Note:** Module Federation remotes must be **built** before the shell can load them. `dev:all` builds product-app and cart-app, serves them with `vite preview` on :3001/:3002 (with rebuild-on-change), and runs the shell with `vite dev` on :3000.
 
 ### Run manually (3 terminals)
 
 ```bash
-# Terminal 1 — Product remote (start first)
-cd product-app && npm run dev
+# Terminal 1 — Product remote (build + watch + preview)
+cd product-app && npm run build && npx concurrently "npm run build:watch" "npm run preview"
 
 # Terminal 2 — Cart remote
-cd cart-app && npm run dev
+cd cart-app && npm run build && npx concurrently "npm run build:watch" "npm run preview"
 
-# Terminal 3 — Shell host
+# Terminal 3 — Shell host (after remotes are serving remoteEntry.js)
 cd shell && npm run dev
 ```
 
