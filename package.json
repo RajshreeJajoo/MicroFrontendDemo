@@ -2,11 +2,31 @@
   "name": "micro-frontend-demo",
   "private": true,
   "description": "Micro-frontend architecture demo with Vite Module Federation, React 19, and independent deployable apps",
+  "homepage": "https://github.com/RajshreeJajoo/MicroFrontendDemo#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RajshreeJajoo/MicroFrontendDemo.git"
+  },
+  "keywords": [
+    "micro-frontends",
+    "module-federation",
+    "vite",
+    "react",
+    "javascript",
+    "architecture"
+  ],
   "scripts": {
     "install:all": "npm install --prefix product-app && npm install --prefix cart-app && npm install --prefix shell",
     "dev:product": "npm run dev --prefix product-app",
     "dev:cart": "npm run dev --prefix cart-app",
     "dev:shell": "npm run dev --prefix shell",
-    "build:all": "npm run build --prefix product-app && npm run build --prefix cart-app && npm run build --prefix shell"
+    "dev:all": "concurrently -n product,cart,shell -c blue,green,magenta \"npm run dev:product\" \"npm run dev:cart\" \"npm run dev:shell\"",
+    "build:all": "npm run build --prefix product-app && npm run build --prefix cart-app && npm run build --prefix shell",
+    "lint:all": "npm run lint --prefix product-app && npm run lint --prefix cart-app && npm run lint --prefix shell",
+    "serve:product": "npm run serve --prefix product-app",
+    "serve:cart": "npm run serve --prefix cart-app"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
