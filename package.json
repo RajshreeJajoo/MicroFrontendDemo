@@ -16,7 +16,7 @@
     "architecture"
   ],
   "scripts": {
-    "install:all": "npm install --prefix product-app && npm install --prefix cart-app && npm install --prefix shell",
+    "install:all": "npm install && npm install --prefix product-app && npm install --prefix cart-app && npm install --prefix shell",
     "dev:product": "npm run build --prefix product-app && concurrently -n watch,serve -c blue \"npm run build:watch --prefix product-app\" \"npm run preview --prefix product-app\"",
     "dev:cart": "npm run build --prefix cart-app && concurrently -n watch,serve -c green \"npm run build:watch --prefix cart-app\" \"npm run preview --prefix cart-app\"",
     "dev:shell": "npm run dev --prefix shell",
@@ -24,7 +24,8 @@
     "build:all": "npm run build --prefix product-app && npm run build --prefix cart-app && npm run build --prefix shell",
     "lint:all": "npm run lint --prefix product-app && npm run lint --prefix cart-app && npm run lint --prefix shell",
     "serve:product": "npm run serve --prefix product-app",
-    "serve:cart": "npm run serve --prefix cart-app"
+    "serve:cart": "npm run serve --prefix cart-app",
+    "deploy:vercel": "bash scripts/deploy-vercel.sh"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

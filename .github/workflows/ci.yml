@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            shell/package-lock.json
+            product-app/package-lock.json
+            cart-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm run install:all
+
+      - name: Lint
+        run: npm run lint:all
+
+      - name: Build all apps
+        run: npm run build:all

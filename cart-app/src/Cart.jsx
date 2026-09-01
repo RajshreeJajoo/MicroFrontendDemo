@@ -1,8 +1,21 @@
 import { useEffect, useState } from "react";
-import { CART_EVENTS } from "./cartEvents";
+import {
+  CART_EVENTS,
+  dispatchCartSync,
+  dispatchClearCart,
+  dispatchRemoveFromCart,
+  loadCart,
+  saveCart,
+  subscribeMfeEvent,
+} from "@mfe/contracts";
 
 const Cart = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(() => loadCart());
+
+  useEffect(() => {
+    saveCart(items);
+    dispatchCartSync(items);
+  }, [items]);
 
   useEffect(() => {
     function onAdd(event) {
@@ -31,12 +44,18 @@ const Cart = () => {
       );
     }
 
-    window.addEventListener(CART_EVENTS.ADD, onAdd);
-    window.addEventListener(CART_EVENTS.REMOVE, onRemove);
+    function onClear() {
+      setItems([]);
+    }
+
+    const unsubscribers = [
+      subscribeMfeEvent(CART_EVENTS.ADD, onAdd),
+      subscribeMfeEvent(CART_EVENTS.REMOVE, onRemove),
+      subscribeMfeEvent(CART_EVENTS.CLEAR, onClear),
+    ];
 
     return () => {
-      window.removeEventListener(CART_EVENTS.ADD, onAdd);
-      window.removeEventListener(CART_EVENTS.REMOVE, onRemove);
+      unsubscribers.forEach((unsubscribe) => unsubscribe());
     };
   }, []);
 
@@ -46,22 +65,33 @@ const Cart = () => {
   );
 
   function removeItem(id) {
-    window.dispatchEvent(
-      new CustomEvent(CART_EVENTS.REMOVE, { detail: { id } })
-    );
+    dispatchRemoveFromCart(id);
+  }
+
+  function clearCart() {
+    dispatchClearCart();
   }
 
   return (
     <section style={styles.section}>
-      <div style={styles.badge}>Remote MFE · Cart App · :3002</div>
-      <h2 style={styles.heading}>Cart</h2>
+      <div style={styles.headerRow}>
+        <div>
+          <div style={styles.badge}>Remote MFE · Cart App · :3002</div>
+          <h2 style={styles.heading}>Cart</h2>
+        </div>
+        {items.length > 0 ? (
+          <button type="button" style={styles.clearBtn} onClick={clearCart}>
+            Clear
+          </button>
+        ) : null}
+      </div>
       <p style={styles.hint}>
-        Listens for <code style={styles.code}>mfe:add-to-cart</code> events from
-        Product remote
+        Persists to <code style={styles.code}>localStorage</code> · listens on
+        shared <code style={styles.code}>@mfe/contracts</code> event bus
       </p>
 
       {items.length === 0 ? (
-        <p style={styles.empty}>Cart is empty — add products from the left</p>
+        <p style={styles.empty}>Cart is empty — add products from the shop</p>
       ) : (
         <>
           <ul style={styles.list}>
@@ -106,6 +136,12 @@ const styles = {
     borderRadius: "12px",
     border: "1px solid #bbf7d0",
   },
+  headerRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    gap: "0.75rem",
+  },
   badge: {
     display: "inline-block",
     fontSize: "0.7rem",
@@ -135,6 +171,16 @@ const styles = {
     background: "#ecfdf5",
     padding: "0.1rem 0.35rem",
     borderRadius: "4px",
+  },
+  clearBtn: {
+    border: "1px solid #fecaca",
+    background: "#fff",
+    color: "#b91c1c",
+    borderRadius: "8px",
+    padding: "0.35rem 0.65rem",
+    fontSize: "0.8rem",
+    fontWeight: 600,
+    cursor: "pointer",
   },
   empty: {
     margin: 0,

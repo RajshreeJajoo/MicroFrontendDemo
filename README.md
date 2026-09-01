@@ -7,9 +7,9 @@
 [![Module Federation](https://img.shields.io/badge/Module_Federation-Vite-6366F1?style=flat-square)](https://github.com/originjs/vite-plugin-federation)
 [![GitHub](https://img.shields.io/badge/source-GitHub-181717?style=flat-square&logo=github)](https://github.com/RajshreeJajoo/MicroFrontendDemo)
 
-A micro-frontend architecture demo using **Vite Module Federation** with React 19. A shell application dynamically loads independently deployable **Product** and **Cart** micro-apps at runtime — with **cross-MFE Add to Cart** via a browser event bus.
+A micro-frontend architecture demo using **Vite Module Federation** with React 19. A shell application dynamically loads independently deployable **Product** and **Cart** micro-apps at runtime — with **shell-owned routing**, **shared event contracts**, **persistent cart**, and **cross-MFE Add to Cart**.
 
-**Resume line:** *Built a micro-frontend e-commerce demo using Vite Module Federation — shell host loads Product and Cart remotes at runtime with shared React dependencies and cross-app communication via custom DOM events.*
+**Resume line:** *Architected a micro-frontend e-commerce demo with Vite Module Federation — shell host with route-level remote composition, shared `@mfe/contracts` event bus, localStorage cart persistence, env-based remote URLs, error boundaries with retry, and GitHub Actions CI.*
 
 ## Architecture
 
@@ -67,9 +67,27 @@ npm run install:all
 npm run dev:all
 ```
 
-Open [http://localhost:3000](http://localhost:3000) only — click **Add to Cart** on products → Cart remote updates live.
+Open [http://localhost:3000](http://localhost:3000) only — use **Shop** and **Cart** routes, search/filter products, click **Add to Cart**, refresh to see persistence.
+
+**Live demo:** Deploy with `npm run deploy:vercel` (requires [Vercel CLI](https://vercel.com/docs/cli) login).
 
 > **Note:** Module Federation remotes must be **built** before the shell can load them. `dev:all` builds product-app and cart-app, serves them with `vite preview` on :3001/:3002 (with rebuild-on-change), and runs the shell with `vite dev` on :3000.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Shell routing** | `/` shop (Product + Cart), `/cart` dedicated cart view |
+| **Shared contracts** | `packages/mfe-contracts` — event names, storage, pub/sub helpers |
+| **Cart persistence** | `localStorage` — survives page refresh |
+| **Search & filter** | Product remote with category chips + search |
+| **Shell nav badge** | Live cart count/total via `mfe:cart-sync` events |
+| **Toast notifications** | Shell listens for add-to-cart events |
+| **Remote retry** | Lazy import retry + error boundary reload |
+| **Env-based remotes** | `VITE_*_REMOTE_URL` in `shell/.env` |
+| **CI** | GitHub Actions — lint + build all apps |
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for design decisions.
 
 ### Run manually (3 terminals)
 
@@ -86,21 +104,20 @@ cd shell && npm run dev
 
 ## Cross-MFE Communication
 
-Product and Cart are **independently deployed** apps with no shared React state. Communication uses the browser event bus:
+Product and Cart are **independently deployed** apps with no shared React state. They import the same contract from `packages/mfe-contracts`:
 
 ```js
+import { dispatchAddToCart, CART_EVENTS } from "@mfe/contracts";
+
 // product-app — dispatch
-window.dispatchEvent(
-  new CustomEvent("mfe:add-to-cart", { detail: product })
-);
+dispatchAddToCart({ id: 1, name: "Keyboard", price: 79.99 });
 
 // cart-app — subscribe
-window.addEventListener("mfe:add-to-cart", (event) => {
-  addItem(event.detail);
-});
-```
+subscribeMfeEvent(CART_EVENTS.ADD, (event) => addItem(event.detail));
 
-This pattern works across runtime boundaries without coupling the micro-frontends.
+// shell — nav badge
+subscribeMfeEvent(CART_EVENTS.SYNC, (event) => setCount(event.detail.count));
+```
 
 ## Build for Production
 
@@ -108,7 +125,7 @@ This pattern works across runtime boundaries without coupling the micro-frontend
 npm run build:all
 ```
 
-Serve built remotes, then update URLs in `shell/vite.config.js`:
+Serve built remotes, then set production URLs in `shell/.env` (see `shell/.env.example`):
 
 ```bash
 cd product-app && npm run serve   # :3001
@@ -121,9 +138,11 @@ cd shell && npm run preview       # :3000
 ```
 MicroFrontendDemo/
 ├── package.json          # install:all, dev:all, build:all
-├── shell/                # Host — loads remotes + error boundaries
-├── product-app/          # Remote — product catalog + Add to Cart
-└── cart-app/             # Remote — cart state + event listener
+├── ARCHITECTURE.md       # Design decisions & production patterns
+├── packages/mfe-contracts/  # Shared event bus + cart storage
+├── shell/                # Host — routing, nav, toasts, remote orchestration
+├── product-app/          # Remote — catalog, search/filter, Add to Cart
+└── cart-app/             # Remote — cart state, persistence, event listener
 ```
 
 ## Key Configuration

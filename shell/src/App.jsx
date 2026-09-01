@@ -1,31 +1,29 @@
-import { lazy, Suspense } from "react";
-import RemoteErrorBoundary from "./RemoteErrorBoundary";
-
-const Product = lazy(() => import("product_app/Product"));
-const Cart = lazy(() => import("cart_app/Cart"));
+import { Routes, Route } from "react-router-dom";
+import ShellNav from "./components/ShellNav";
+import ToastStack from "./components/ToastStack";
+import useToasts from "./hooks/useToasts";
+import CartPage from "./pages/CartPage";
+import ShopPage from "./pages/ShopPage";
 
 export default function App() {
+  const toasts = useToasts();
+
   return (
     <div style={styles.page}>
       <header style={styles.header}>
         <p style={styles.eyebrow}>Module Federation · Vite · React 19</p>
         <h1 style={styles.title}>Micro-Frontend Demo</h1>
         <p style={styles.subtitle}>
-          Shell host composes Product and Cart remotes at runtime — try Add to
-          Cart for cross-MFE communication
+          Shell orchestrates Product and Cart remotes — routing, shared contracts,
+          persistent cart, and cross-MFE events
         </p>
+        <ShellNav />
       </header>
 
-      <Suspense fallback={<p style={styles.loading}>Loading micro-frontends...</p>}>
-        <div style={styles.grid}>
-          <RemoteErrorBoundary label="Product remote">
-            <Product />
-          </RemoteErrorBoundary>
-          <RemoteErrorBoundary label="Cart remote">
-            <Cart />
-          </RemoteErrorBoundary>
-        </div>
-      </Suspense>
+      <Routes>
+        <Route path="/" element={<ShopPage />} />
+        <Route path="/cart" element={<CartPage />} />
+      </Routes>
 
       <footer style={styles.footer}>
         <span>Shell :3000</span>
@@ -34,6 +32,8 @@ export default function App() {
         <span>·</span>
         <span>Cart :3002</span>
       </footer>
+
+      <ToastStack toasts={toasts} />
     </div>
   );
 }
@@ -50,7 +50,7 @@ const styles = {
   },
   header: {
     textAlign: "center",
-    marginBottom: "2rem",
+    marginBottom: "0.5rem",
   },
   eyebrow: {
     margin: 0,
@@ -68,21 +68,10 @@ const styles = {
   },
   subtitle: {
     margin: "0.65rem auto 0",
-    maxWidth: "520px",
+    maxWidth: "560px",
     color: "#6b7280",
     fontSize: "0.95rem",
     lineHeight: 1.5,
-  },
-  grid: {
-    display: "flex",
-    gap: "1.5rem",
-    flexWrap: "wrap",
-    alignItems: "stretch",
-  },
-  loading: {
-    textAlign: "center",
-    color: "#6b7280",
-    padding: "2rem",
   },
   footer: {
     marginTop: "2rem",
