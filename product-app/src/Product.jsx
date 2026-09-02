@@ -77,28 +77,30 @@ const Product = () => {
       {filteredProducts.length === 0 ? (
         <p style={styles.empty}>No products match your filters.</p>
       ) : (
-        <ul style={styles.list}>
-          {filteredProducts.map((product) => (
-            <li key={product.id} style={styles.card}>
-              <div>
-                <span style={styles.name}>{product.name}</span>
-                <span style={styles.meta}>
-                  {product.category} · ${product.price.toFixed(2)}
-                </span>
-              </div>
-              <button
-                type="button"
-                style={{
-                  ...styles.button,
-                  ...(addedId === product.id ? styles.buttonAdded : {}),
-                }}
-                onClick={() => handleAdd(product)}
-              >
-                {addedId === product.id ? "Added ✓" : "Add to Cart"}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div style={styles.scrollArea} aria-label="Product list">
+          <ul style={styles.list}>
+            {filteredProducts.map((product) => (
+              <li key={product.id} style={styles.card}>
+                <div>
+                  <span style={styles.name}>{product.name}</span>
+                  <span style={styles.meta}>
+                    {product.category} · ${product.price.toFixed(2)}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  style={{
+                    ...styles.button,
+                    ...(addedId === product.id ? styles.buttonAdded : {}),
+                  }}
+                  onClick={() => handleAdd(product)}
+                >
+                  {addedId === product.id ? "Added ✓" : "Add to Cart"}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </section>
   );
@@ -108,10 +110,14 @@ const styles = {
   section: {
     flex: 1,
     minWidth: "280px",
+    height: "480px",
+    display: "flex",
+    flexDirection: "column",
     padding: "1.5rem",
     background: "#f0f9ff",
     borderRadius: "12px",
     border: "1px solid #bae6fd",
+    boxSizing: "border-box",
   },
   badge: {
     display: "inline-block",
@@ -131,16 +137,26 @@ const styles = {
     color: "#0369a1",
   },
   hint: {
-    margin: "0 0 1rem",
+    margin: "0 0 0.75rem",
     fontSize: "0.85rem",
     color: "#64748b",
     lineHeight: 1.4,
+    flexShrink: 0,
+  },
+  scrollArea: {
+    flex: 1,
+    minHeight: 0,
+    overflowY: "auto",
+    paddingRight: "0.35rem",
+    scrollbarWidth: "thin",
+    scrollbarColor: "#7dd3fc #e0f2fe",
   },
   controls: {
     display: "flex",
     flexDirection: "column",
     gap: "0.75rem",
-    marginBottom: "1rem",
+    marginBottom: "0.75rem",
+    flexShrink: 0,
   },
   search: {
     width: "100%",

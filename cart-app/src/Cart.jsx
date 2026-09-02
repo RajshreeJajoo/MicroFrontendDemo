@@ -94,29 +94,31 @@ const Cart = () => {
         <p style={styles.empty}>Cart is empty — add products from the shop</p>
       ) : (
         <>
-          <ul style={styles.list}>
-            {items.map((item) => (
-              <li key={item.id} style={styles.card}>
-                <span style={styles.name}>
-                  {item.name}{" "}
-                  <span style={styles.qty}>×{item.quantity}</span>
-                </span>
-                <div style={styles.actions}>
-                  <span style={styles.lineTotal}>
-                    ${(item.price * item.quantity).toFixed(2)}
+          <div style={styles.scrollArea} aria-label="Cart items">
+            <ul style={styles.list}>
+              {items.map((item) => (
+                <li key={item.id} style={styles.card}>
+                  <span style={styles.name}>
+                    {item.name}{" "}
+                    <span style={styles.qty}>×{item.quantity}</span>
                   </span>
-                  <button
-                    type="button"
-                    style={styles.removeBtn}
-                    onClick={() => removeItem(item.id)}
-                    aria-label={`Remove ${item.name}`}
-                  >
-                    ✕
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  <div style={styles.actions}>
+                    <span style={styles.lineTotal}>
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </span>
+                    <button
+                      type="button"
+                      style={styles.removeBtn}
+                      onClick={() => removeItem(item.id)}
+                      aria-label={`Remove ${item.name}`}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
           <div style={styles.total}>
             <span>Total</span>
             <span>${total.toFixed(2)}</span>
@@ -131,10 +133,14 @@ const styles = {
   section: {
     flex: 1,
     minWidth: "280px",
+    height: "480px",
+    display: "flex",
+    flexDirection: "column",
     padding: "1.5rem",
     background: "#f0fdf4",
     borderRadius: "12px",
     border: "1px solid #bbf7d0",
+    boxSizing: "border-box",
   },
   headerRow: {
     display: "flex",
@@ -160,10 +166,19 @@ const styles = {
     color: "#15803d",
   },
   hint: {
-    margin: "0 0 1rem",
+    margin: "0 0 0.75rem",
     fontSize: "0.85rem",
     color: "#64748b",
     lineHeight: 1.4,
+    flexShrink: 0,
+  },
+  scrollArea: {
+    flex: 1,
+    minHeight: 0,
+    overflowY: "auto",
+    paddingRight: "0.35rem",
+    scrollbarWidth: "thin",
+    scrollbarColor: "#86efac #dcfce7",
   },
   code: {
     fontFamily: "ui-monospace, monospace",
@@ -240,9 +255,12 @@ const styles = {
   total: {
     display: "flex",
     justifyContent: "space-between",
-    marginTop: "1rem",
-    paddingTop: "1rem",
-    borderTop: "2px solid #bbf7d0",
+    flexShrink: 0,
+    marginTop: "0.75rem",
+    padding: "0.85rem 1rem",
+    borderRadius: "8px",
+    background: "#fff",
+    border: "2px solid #bbf7d0",
     fontWeight: 700,
     fontSize: "1.1rem",
     color: "#15803d",
