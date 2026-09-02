@@ -1,8 +1,8 @@
 {
   "name": "micro-frontend-demo",
   "private": true,
-  "description": "Micro-frontend architecture demo with Vite Module Federation, React 19, and independent deployable apps",
-  "homepage": "https://github.com/RajshreeJajoo/MicroFrontendDemo#readme",
+  "description": "Micro-frontend e-commerce demo — Vite Module Federation, React 19, shell routing, cross-MFE events",
+  "homepage": "https://micro-frontend-demo-eta.vercel.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/RajshreeJajoo/MicroFrontendDemo.git"
@@ -25,7 +25,8 @@
     "lint:all": "npm run lint --prefix product-app && npm run lint --prefix cart-app && npm run lint --prefix shell",
     "serve:product": "npm run serve --prefix product-app",
     "serve:cart": "npm run serve --prefix cart-app",
-    "deploy:vercel": "bash scripts/deploy-vercel.sh"
+    "deploy:vercel": "bash scripts/deploy-vercel.sh",
+    "github:setup": "bash scripts/github-setup.sh"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

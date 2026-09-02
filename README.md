@@ -2,12 +2,15 @@
 
 > Shell + Product + Cart — Vite Module Federation · React 19 · Runtime composition
 
+[![Live Demo](https://img.shields.io/badge/demo-vercel-black?style=flat-square&logo=vercel)](https://micro-frontend-demo-eta.vercel.app)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
 [![Module Federation](https://img.shields.io/badge/Module_Federation-Vite-6366F1?style=flat-square)](https://github.com/originjs/vite-plugin-federation)
 [![GitHub](https://img.shields.io/badge/source-GitHub-181717?style=flat-square&logo=github)](https://github.com/RajshreeJajoo/MicroFrontendDemo)
 
 A micro-frontend architecture demo using **Vite Module Federation** with React 19. A shell application dynamically loads independently deployable **Product** and **Cart** micro-apps at runtime — with **shell-owned routing**, **shared event contracts**, **persistent cart**, and **cross-MFE Add to Cart**.
+
+**Live Demo:** https://micro-frontend-demo-eta.vercel.app
 
 **Resume line:** *Architected a micro-frontend e-commerce demo with Vite Module Federation — shell host with route-level remote composition, shared `@mfe/contracts` event bus, localStorage cart persistence, env-based remote URLs, error boundaries with retry, and GitHub Actions CI.*
 
@@ -68,10 +71,6 @@ npm run dev:all
 ```
 
 Open [http://localhost:3000](http://localhost:3000) only — use **Shop** and **Cart** routes, search/filter products, click **Add to Cart**, refresh to see persistence.
-
-**Live demo:** [https://micro-frontend-demo-eta.vercel.app](https://micro-frontend-demo-eta.vercel.app)
-
-Deploy with `npm run deploy:vercel` (requires [Vercel CLI](https://vercel.com/docs/cli) login).
 
 > **Note:** Module Federation remotes must be **built** before the shell can load them. `dev:all` builds product-app and cart-app, serves them with `vite preview` on :3001/:3002 (with rebuild-on-change), and runs the shell with `vite dev` on :3000.
 
@@ -135,6 +134,31 @@ cd cart-app && npm run serve      # :3002
 cd shell && npm run preview       # :3000
 ```
 
+### Deploy to Vercel
+
+Three independent Vercel projects (shell + 2 remotes):
+
+```bash
+npm run install:all
+npm run deploy:vercel   # requires: npx vercel login
+```
+
+| App | Production URL |
+|-----|----------------|
+| Shell (demo) | https://micro-frontend-demo-eta.vercel.app |
+| Product remote | https://micro-frontend-product.vercel.app |
+| Cart remote | https://micro-frontend-cart.vercel.app |
+
+### GitHub repo setup (About section)
+
+After `gh auth login`, run once:
+
+```bash
+npm run github:setup
+```
+
+Sets repo description, homepage URL, and topics.
+
 ## Project Structure
 
 ```
@@ -179,5 +203,6 @@ exposes: {
 
 - [LinkedIn](https://www.linkedin.com/in/rajshree-jajoo-297049184)
 - [GitHub](https://github.com/RajshreeJajoo)
+- [Live Demo](https://micro-frontend-demo-eta.vercel.app)
 
 If this project helped you, consider giving it a star.
