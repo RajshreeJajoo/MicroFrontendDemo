@@ -69,7 +69,7 @@ npm run dev:all
 
 Open [http://localhost:3000](http://localhost:3000) only — use **Shop** and **Cart** routes, search/filter products, click **Add to Cart**, refresh to see persistence.
 
-**Live demo:** [https://micro-frontend-demo.vercel.app](https://micro-frontend-demo.vercel.app)
+**Live demo:** [https://micro-frontend-demo-eta.vercel.app](https://micro-frontend-demo-eta.vercel.app)
 
 Deploy with `npm run deploy:vercel` (requires [Vercel CLI](https://vercel.com/docs/cli) login).
 

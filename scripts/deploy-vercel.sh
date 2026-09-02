@@ -13,9 +13,11 @@ deploy_project() {
   rm -rf .vercel
 
   local -a cmd=(npx vercel deploy --prod --yes --local-config "$config" --name "$project")
-  for env_var in "${extra_env[@]}"; do
-    cmd+=(--build-env "$env_var")
-  done
+  if ((${#extra_env[@]} > 0)); then
+    for env_var in "${extra_env[@]}"; do
+      cmd+=(--build-env "$env_var")
+    done
+  fi
 
   local output
   output="$("${cmd[@]}" 2>&1)"
