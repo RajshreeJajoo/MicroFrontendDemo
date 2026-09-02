@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "micro-frontend-demo",
+  "installCommand": "npm run install:all",
+  "buildCommand": "npm run build --prefix shell",
+  "outputDirectory": "shell/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

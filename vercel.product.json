@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "micro-frontend-product",
+  "installCommand": "npm run install:all",
+  "buildCommand": "npm run build --prefix product-app",
+  "outputDirectory": "product-app/dist",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }]
+    }
+  ]
+}

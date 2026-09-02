@@ -69,7 +69,9 @@ npm run dev:all
 
 Open [http://localhost:3000](http://localhost:3000) only — use **Shop** and **Cart** routes, search/filter products, click **Add to Cart**, refresh to see persistence.
 
-**Live demo:** Deploy with `npm run deploy:vercel` (requires [Vercel CLI](https://vercel.com/docs/cli) login).
+**Live demo:** [https://micro-frontend-demo.vercel.app](https://micro-frontend-demo.vercel.app)
+
+Deploy with `npm run deploy:vercel` (requires [Vercel CLI](https://vercel.com/docs/cli) login).
 
 > **Note:** Module Federation remotes must be **built** before the shell can load them. `dev:all` builds product-app and cart-app, serves them with `vite preview` on :3001/:3002 (with rebuild-on-change), and runs the shell with `vite dev` on :3000.
 
