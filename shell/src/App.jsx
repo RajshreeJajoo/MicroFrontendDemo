@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import ShellNav from "./components/ShellNav";
 import ToastStack from "./components/ToastStack";
 import useToasts from "./hooks/useToasts";
 import CartPage from "./pages/CartPage";
@@ -18,7 +17,6 @@ export default function App() {
           Shell orchestrates Product and Cart remotes — routing, shared contracts,
           persistent cart, and cross-MFE events
         </p>
-        <ShellNav />
       </header>
 
       <Routes>
