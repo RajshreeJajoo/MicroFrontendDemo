@@ -3,6 +3,7 @@ import ShellNav from "./components/ShellNav";
 import ToastStack from "./components/ToastStack";
 import useToasts from "./hooks/useToasts";
 import CartPage from "./pages/CartPage";
+import ProductPage from "./pages/ProductPage";
 import ShopPage from "./pages/ShopPage";
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<ShopPage />} />
+        <Route path="/product" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
       </Routes>
 

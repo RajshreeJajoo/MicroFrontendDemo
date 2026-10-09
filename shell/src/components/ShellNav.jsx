@@ -17,6 +17,15 @@ export default function ShellNav() {
         Shop
       </NavLink>
       <NavLink
+        to="/product"
+        style={({ isActive }) => ({
+          ...styles.link,
+          ...(isActive ? styles.linkActive : {}),
+        })}
+      >
+        Product
+      </NavLink>
+      <NavLink
         to="/cart"
         style={({ isActive }) => ({
           ...styles.link,

@@ -12,30 +12,22 @@ function RemoteSkeleton({ label }) {
 
 export default function ShopPage() {
   return (
-    <div style={styles.grid}>
+    <div style={styles.wrap}>
       <RemoteSlot
         label="Product remote"
         importRemote={() => import("product_app/Product")}
         skeleton={<RemoteSkeleton label="Product remote" />}
-      />
-      <RemoteSlot
-        label="Cart remote"
-        importRemote={() => import("cart_app/Cart")}
-        skeleton={<RemoteSkeleton label="Cart remote" />}
       />
     </div>
   );
 }
 
 const styles = {
-  grid: {
-    display: "flex",
-    gap: "1.5rem",
-    flexWrap: "wrap",
-    alignItems: "stretch",
+  wrap: {
+    maxWidth: "560px",
+    margin: "0 auto",
   },
   skeleton: {
-    flex: 1,
     minWidth: "280px",
     padding: "1.5rem",
     borderRadius: "12px",
